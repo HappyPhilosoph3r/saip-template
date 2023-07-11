@@ -1,0 +1,36 @@
+export interface IPerformanceMetric {
+  marital_status: string;
+  application_mode: string;
+  application_order: number;
+  course: string;
+  attendance_type: string;
+  previous_qualification: string;
+  nationality: string;
+  mothers_qualification: string;
+  fathers_qualification: string;
+  mothers_occupation: string;
+  fathers_occupation: string;
+  displaced: string;
+  educational_special_needs: string;
+  debtor: string;
+  tuition_fees_up_to_date: string;
+  gender: string;
+  scholarship_holder: string;
+  age_at_enrolment: number;
+  international: string;
+  curricular_units_1st_semester_credited: number;
+  curricular_units_1st_semester_enrolled: number;
+  curricular_units_1st_semester_evaluations: number;
+  curricular_units_1st_semester_approved: number;
+  curricular_units_1st_semester_grade: number;
+  curricular_units_1st_semester_without_evaluations: number;
+  curricular_units_2nd_semester_credited: number;
+  curricular_units_2nd_semester_enrolled: number;
+  curricular_units_2nd_semester_evaluations: number;
+  curricular_units_2nd_semester_approved: number;
+  curricular_units_2nd_semester_grade: number;
+  curricular_units_2nd_semester_without_evaluations: number;
+  unemployment_rate: number;
+  inflation_rate: number;
+  gdp: number
+}
