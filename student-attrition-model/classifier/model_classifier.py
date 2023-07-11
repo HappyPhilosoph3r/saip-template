@@ -143,6 +143,9 @@ class Classifier:
         """
         logging.info("training model from dataset ...")
         [x_train, y_train], _ = training_dataset(True)
+        if len(x_train) == 0 or len(y_train) == 0:
+            return
+        print("test", x_train)
         self.rfc.fit(x_train, y_train)
         self.svc.fit(x_train, y_train)
         self.knn.fit(x_train, y_train)
@@ -192,6 +195,8 @@ class Classifier:
         :param training: bool
         :return: None
         """
+        if not self.trained:
+            return
         [x_train, y_train], [x_val, y_val] = training_dataset(True)
         if training:
             training_predictions = [self.predict(i)[0] for i in x_train]
