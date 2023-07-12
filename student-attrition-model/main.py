@@ -19,4 +19,4 @@ if __name__ == '__main__':
         logging.info("Server initialised")
         initialise_database()
         logging.info(f'Student Database Overview: {student_overview()}')
-        app.run(port=6000)
+        app.run(host='0.0.0.0', port=3001)

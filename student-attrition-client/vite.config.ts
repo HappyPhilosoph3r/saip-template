@@ -14,7 +14,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4000'
+        target: 'http://server:4001' // Uncomment if using docker and comment out if not
+        // target: 'http://localhost:4001' // Comment out if using docker and uncomment if not
       },
     }
   }

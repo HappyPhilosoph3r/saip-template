@@ -145,7 +145,6 @@ class Classifier:
         [x_train, y_train], _ = training_dataset(True)
         if len(x_train) == 0 or len(y_train) == 0:
             return
-        print("test", x_train)
         self.rfc.fit(x_train, y_train)
         self.svc.fit(x_train, y_train)
         self.knn.fit(x_train, y_train)
@@ -236,6 +235,8 @@ class Classifier:
         :return: tuple[str, float]
 
         """
+        if not self.trained:
+            self.train()
         assert self.trained
         rfc_prediction = self.rfc.predict_proba([data])[0]
         svc_prediction = self.svc.predict_proba([data])[0]

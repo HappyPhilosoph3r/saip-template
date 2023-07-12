@@ -1,0 +1,28 @@
+version: '1'
+services: 
+  model: 
+    container_name: "student-attrition-model"
+    build: ./student-attrition-model
+    ports: 
+      - "3001:3001"
+    depends_on:
+      - database
+  server:
+    container_name: "student-attrition-server"
+    build: ./student-attrition-server
+    ports:
+      - "4001:4001"
+    depends_on:
+      - model
+  client:
+    container_name: "student-attrition-client"
+    build: ./student-attrition-client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+      - database
+      - model
+  database:
+    image: mongo
+    restart: 'always'

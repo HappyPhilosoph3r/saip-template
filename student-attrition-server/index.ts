@@ -1,5 +1,5 @@
 import express, { json, Router, Request, Response, NextFunction } from "express"
-import { PORT } from "./utils/habitat";
+import { DATABASE_IP, PORT } from "./utils/habitat";
 import logger from "./utils/logger"
 import mongoose from "mongoose";
 import * as models from './models/index'
@@ -14,7 +14,8 @@ models.init()
 
 // Set up connection to MongoDb database
 const databaseName = 'student_attrition_intervention_2'
-mongoose.connect(`mongodb://127.0.0.1:27017/${databaseName}`);
+mongoose.connect(`mongodb://${DATABASE_IP}/${databaseName}`);
+
 const db = mongoose.connection;
 // Check the mongoose connection is copacetic;
 db.on('error', err => {

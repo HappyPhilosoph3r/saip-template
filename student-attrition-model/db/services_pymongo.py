@@ -1,8 +1,11 @@
 from pymongo import MongoClient, ASCENDING
 from pymongo.collection import Collection
 
+docker = True
+
 # Connect to mongoDB
-client = MongoClient('mongodb://localhost:27017/')
+database = 'database' if docker else '127.0.0.1'
+client = MongoClient(f'mongodb://{database}:27017/')
 
 # Connect to specific database
 db = client.student_attrition_intervention
