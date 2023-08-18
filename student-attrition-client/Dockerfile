@@ -1,4 +1,4 @@
-FROM node:lts-alpine as build-stage
+FROM node:lts-alpine AS build-stage
 
 WORKDIR /student-attrition-client
 
@@ -8,6 +8,14 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "run", "dev", "--", "--host"]
+RUN npm run build
 
-EXPOSE 5173
+FROM nginx:stable-alpine AS production-stage
+
+COPY  ./nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build-stage /student-attrition-client/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+ CMD ["nginx", "-g", "daemon off;"]

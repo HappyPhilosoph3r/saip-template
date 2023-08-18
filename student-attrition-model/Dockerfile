@@ -7,6 +7,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "main.py"]
+CMD ["hypercorn", "--bind=0.0.0.0", "main:create_app()"]
 
-EXPOSE 3001
+EXPOSE 8000
