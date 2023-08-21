@@ -7,7 +7,7 @@ export async function getPerformanceMetricOptions(req: Request, res: Response, n
   /**  If performance metric options exists then returns all options to the client. If not generates the required
    * options in the database, then returns them to the client. */
   try {
-    const options = await PerformanceMetricOptions.findOne({name: "performanceMetricOptions"});
+    const options: IPerformanceMetricOptions | null = await PerformanceMetricOptions.findOne({name: "performanceMetricOptions"});
     if(!options){
       logger.error("Performance Metric Options could not be found.")
       throw Error("Performance Metric Options could not be found.")
@@ -16,7 +16,7 @@ export async function getPerformanceMetricOptions(req: Request, res: Response, n
   } catch (err) {
     await createPerformanceMetricOptions()
     try {
-      const options = await PerformanceMetricOptions.findOne({name: "performanceMetricOptions"});
+      const options: IPerformanceMetricOptions | null = await PerformanceMetricOptions.findOne({name: "performanceMetricOptions"});
       if(!options){
         logger.error("Performance Metric Options could not be found.")
         throw Error("Performance Metric Options could not be found.")
