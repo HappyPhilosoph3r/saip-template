@@ -3,10 +3,11 @@ import axios from "axios";
 import type { IMetricOptions } from "../../@types/metrics";
 import { useErrorStore } from "@/stores/errorStore";
 import type { AxiosError } from "axios";
+import { alphaSortObject } from "@/composables/sort";
 
 
 export const useMetricOptionsStore = defineStore('metricOptionsStore', {
-  state: (): IMetricOptions =>  ({
+  state: () =>  ({
     name: null,
     marital_status: [],
     application_mode: [],
@@ -24,13 +25,14 @@ export const useMetricOptionsStore = defineStore('metricOptionsStore', {
   actions: {
     async getMetricOptions(){
       try {
-        const results = await axios.get('/api/performance-metric-options').then(response => {
+        const resultsRequest = await axios.get('/api/performance-metric-options').then(response => {
           return response.data
         }).catch(e => {
           const error = useErrorStore()
           const err = e as AxiosError
           error.displayError(err.message)
         })
+        const results = alphaSortObject(resultsRequest)
         this.name = results.name
         this.marital_status = results.marital_status
         this.application_mode = results.application_mode
@@ -47,6 +49,6 @@ export const useMetricOptionsStore = defineStore('metricOptionsStore', {
         const error = useErrorStore()
         error.displayError("Could not access performance metric options from server")
       }
-    }
+    },
   }
 })

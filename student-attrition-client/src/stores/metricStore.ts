@@ -110,6 +110,13 @@ export const useMetricStore = defineStore('metricStore', {
       const relevant_entries = (<any>Object).entries(state.data).filter((key: any[]) => backgroundMetrics.includes(key[0]));
       const relevant_values = relevant_entries.filter((entry: any[]) => entry[1] !== null && entry[1] != '').length
       return (100 / relevant_entries.length) * relevant_values
+    },
+    resultsScore(state): string {
+      if(!state.results.score){
+        return ""
+      }
+      return (state.results.score * 100).toFixed(2)
+
     }
 
   },
