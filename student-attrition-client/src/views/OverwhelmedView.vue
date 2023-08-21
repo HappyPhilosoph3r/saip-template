@@ -27,9 +27,9 @@ function goToPerformanceMetric() {
   <p> Below is a text-box, feel free to use this to write down your stream of consciousness. It will not be saved
     anywhere and will be destroyed when you refresh the page, feel free to use a text-editor or programme of your
     choice instead.</p>
-  <h3 style="color: red; margin-bottom: 1.5em">Do NOT use this if you want your work to be saved. </h3>
+  <h3 style="color: red; margin-bottom: 1.5em" class="ml-2 mr-2">Do NOT use this if you want your work to be saved. </h3>
   <v-row justify="center">
-    <v-card width="1000" flat>
+    <v-card width="1000" flat class="ml-2 mr-2">
       <v-textarea auto-grow></v-textarea>
     </v-card>
   </v-row>

@@ -53,16 +53,21 @@
   <h2>
     Please Note ...
   </h2>
-  <h3>This is a machine learning project and the algorithms are not 100% accurate.</h3>
-  <h3>
-    If the prediction is not graduate, do not despair! There are plenty of resources that can help you to get back on
-  track.
+  <h3 class="ml-2 mr-2">This is a machine learning project and the algorithms are not 100% accurate.</h3>
+  <h3 class="ml-2 mr-2">There are 3 possible predictions: Graduate, Dropout and Enrolled.</h3>
+  <h3 class="ml-2 mr-2">
+    The model returns the prediction which has the highest percentage. if your prediction is Dropout with 40%,
+    then this does not mean that the chance of graduating is 60%.
+  </h3>
+  <h3 class="ml-2 mr-2">
+    If the prediction is not Graduate, do not despair! There are plenty of resources that can help you to get back on
+    track.
   </h3>
   <v-row v-if="!consent" justify="center" dense class="mt-2">
     <v-btn @click.prevent="provideConsent" color="primary">Begin performance analysis</v-btn>
   </v-row>
   <v-row v-if="consent" justify="center" dense class="mt-2">
-    <v-card class="ml-2 mr-2">
+    <v-card class="ml-2 mr-2 mb-2">
       <v-tabs
           v-model="tab"
           bg-color="deep-purple-accent-4"
