@@ -16,17 +16,15 @@ import { computed } from "vue";
 
 </script>
 <template>
-  <div>
-    <v-dialog v-model="success" width="500">
-      <v-card>
-        <h1>{{ title_value }}</h1>
-        <h2>{{ message_value }}</h2>
-        <v-card-actions class="justify-center">
-          <v-btn @click.prevent="success = false" color="primary">Continue</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-dialog v-model="success" width="500">
+    <v-card>
+      <h1>{{ title_value }}</h1>
+      <h2>{{ message_value }}</h2>
+      <v-card-actions class="justify-center">
+        <v-btn @click.prevent="success = false" color="primary">Continue</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 <style scoped>
   h1, h2 {

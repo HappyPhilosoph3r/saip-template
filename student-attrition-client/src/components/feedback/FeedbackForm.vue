@@ -52,32 +52,31 @@
 
 </script>
 <template>
-  <div>
-    <v-btn @click.prevent="openFeedbackDialog = !openFeedbackDialog">Feedback</v-btn>
-    <v-dialog v-model="openFeedbackDialog" width="500">
-      <v-card>
-        <h1> Provide Feedback </h1>
-        <v-form ref="feedbackForm" @submit.prevent="submitFeedback">
-          <v-autocomplete v-model="info.genus"
-                          :items="feedbackTypes"
-                          label="Feedback Type"
-          >
-          </v-autocomplete>
-          <v-textarea v-model="info.content"
-                      label="Feedback"
-          >
-          </v-textarea>
-          <v-card-actions class="justify-space-around">
-            <v-btn @click.prevent="openFeedbackDialog = !openFeedbackDialog" color="error">Cancel</v-btn>
-            <v-btn type="submit" color="primary">Submit</v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    <success-dialog v-model="openSuccessDialog"
-                    title="Feedback Successfully Submitted"
-                    message="Thank you for taking the time!" />
-  </div>
+  <v-btn @click.prevent="openFeedbackDialog = !openFeedbackDialog">Feedback</v-btn>
+  <v-dialog v-model="openFeedbackDialog" width="500">
+    <v-card>
+      <h1> Provide Feedback </h1>
+      <v-form ref="feedbackForm" @submit.prevent="submitFeedback">
+        <v-autocomplete v-model="info.genus"
+                        :items="feedbackTypes"
+                        label="Feedback Type"
+        >
+        </v-autocomplete>
+        <v-textarea v-model="info.content"
+                    label="Feedback"
+        >
+        </v-textarea>
+        <v-card-actions class="justify-space-around">
+          <v-btn @click.prevent="openFeedbackDialog = !openFeedbackDialog" color="error">Cancel</v-btn>
+          <v-btn type="submit" color="primary">Submit</v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-dialog>
+  <success-dialog v-model="openSuccessDialog"
+                  title="Feedback Successfully Submitted"
+                  message="Thank you for taking the time!">
+  </success-dialog>
 </template>
 <style scoped>
   h1 {

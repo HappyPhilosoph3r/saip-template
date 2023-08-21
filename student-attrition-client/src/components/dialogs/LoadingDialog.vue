@@ -14,17 +14,14 @@ const title_value = props.title ? props.title : "Loading";
 
 </script>
 <template>
-  <div>
-    <v-dialog v-model="isLoading" width="500">
-      <v-card color="primary">
-        <h1>{{ title_value }}</h1>
-<!--        <v-progress-linear indeterminate></v-progress-linear>-->
-        <v-row justify="center" class="mt-4 mb-4">
-          <v-progress-circular indeterminate></v-progress-circular>
-        </v-row>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-dialog v-model="isLoading" width="500">
+    <v-card color="primary">
+      <h1>{{ title_value }}</h1>
+      <v-row justify="center" class="mt-4 mb-4">
+        <v-progress-circular indeterminate></v-progress-circular>
+      </v-row>
+    </v-card>
+  </v-dialog>
 </template>
 <style scoped>
 h1, h2 {

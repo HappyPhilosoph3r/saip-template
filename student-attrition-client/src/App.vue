@@ -7,16 +7,13 @@ const error = useErrorStore()
 </script>
 
 <template>
-  <div>
-    <error-dialog v-model="error.errorOccurred" />
     <v-app>
+      <error-dialog v-model="error.errorOccurred" />
       <navigation-menu />
-      <br><br><br>
-      <main>
+      <v-main>
         <RouterView />
-      </main>
+      </v-main>
     </v-app>
-  </div>
 </template>
 
 <style scoped>
