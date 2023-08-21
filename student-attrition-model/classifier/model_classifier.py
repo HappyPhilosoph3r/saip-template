@@ -1,4 +1,4 @@
-from db import training_dataset, student_iqr_percentiles
+from db import training_dataset, test_dataset, student_iqr_percentiles
 from feature_translation import features_hr, features_update, get_dataset_schema, get_dict_key_by_value
 import logging
 from model_development import class_stats
@@ -55,7 +55,11 @@ class Classifier:
 
         classes: list - Complete list of all possible label for the dataset
 
+        graduate_index: float - The index value of "Graduate" in the classes list
+
         trained: bool - An indication of whether the classifier has been trained yet
+
+        training_attempts: int - The number of times the classifier training has been attempted
 
         average_accuracy: float | None - Calculates accuracy of the model by using the mean class precision
 
@@ -75,6 +79,8 @@ class Classifier:
         Methods
 
         info: dict - Returns a dictionary containing the relevant information for this Classifier class instance.
+
+        create_classes - Takes a list of classes and sets the values for classes and graduate_index variables.
 
         train: None - Trains the individual models using the training dataset.
 
@@ -100,7 +106,9 @@ class Classifier:
         self.knn = KNeighborsClassifier(n_neighbors=10, algorithm='ball_tree', leaf_size=1)
         self.adb = AdaBoostClassifier(algorithm='SAMME.R', learning_rate=0.5, n_estimators=80)
         self.classes = list()
+        self.graduate_index = None
         self.trained = False
+        self.training_attempts = 0
 
         # Evaluation
         self.average_accuracy = None
@@ -114,7 +122,6 @@ class Classifier:
         self.load_model()
         if not self.trained:
             self.train()
-        self.evaluate()
 
     def info(self) -> dict:
         """
@@ -135,6 +142,17 @@ class Classifier:
             "f_score_macro": self.f_score_macro,
         }
 
+    def create_classes(self, classes):
+        """
+        Takes a list of classes from a classifier and sets the values for classes and graduate_index variables.
+
+        :param classes: list
+        :return: None
+
+        """
+        self.classes = list(classes)
+        self.graduate_index = list(classes).index("Graduate")
+
     def train(self) -> None:
         """
         Trains the individual models using the training dataset. Also sets the classes and trained variables.
@@ -143,14 +161,16 @@ class Classifier:
         """
         logging.info("training model from dataset ...")
         [x_train, y_train], _ = training_dataset(True)
-        if len(x_train) == 0 or len(y_train) == 0:
+        if not x_train or len(x_train) < 100:
+            self.training_attempts += 1
             return
         self.rfc.fit(x_train, y_train)
         self.svc.fit(x_train, y_train)
         self.knn.fit(x_train, y_train)
         self.adb.fit(x_train, y_train)
-        self.classes = list(self.rfc.classes_)
+        self.create_classes(self.rfc.classes_)
         self.trained = True
+        self.evaluate()
 
     def save_model(self) -> None:
         """
@@ -179,7 +199,7 @@ class Classifier:
         try:
             with open(model_location, "rb") as f:
                 self.rfc, self.svc, self.knn, self.adb = pickle.load(f)
-            self.classes = list(self.rfc.classes_)
+            self.create_classes(self.rfc.classes_)
             self.trained = True
         except Exception as e:
             self.trained = False
@@ -194,15 +214,17 @@ class Classifier:
         :param training: bool
         :return: None
         """
-        if not self.trained:
-            return
-        [x_train, y_train], [x_val, y_val] = training_dataset(True)
+        [x_test, y_test] = test_dataset()
         if training:
+            [x_train, y_train], [x_val, y_val] = training_dataset(True)
             training_predictions = [self.predict(i)[0] for i in x_train]
             training_cs = class_stats("Training Model", self.classes, training_predictions, y_train)
-            logging.info(f"class stats for classifier: {training_cs}")
-        eval_predictions = [self.predict(i)[0] for i in x_val]
-        cs = class_stats("classifier", self.classes, eval_predictions, y_val)
+            logging.info(f"class stats for classifier training: {training_cs}")
+            eval_predictions = [self.predict(i)[0] for i in x_val]
+            eval_cs = class_stats("classifier", self.classes, eval_predictions, y_val)
+            logging.info(f"class stats for classifier evaluation: {training_cs}")
+        test_predictions = [self.predict(i)[0] for i in x_test]
+        cs = class_stats("classifier", self.classes, test_predictions, y_test)
         for k, v in cs.items():
             setattr(self, k, v)
 
@@ -227,22 +249,31 @@ class Classifier:
             evaluation_df.to_csv("model_evaluation.csv")
         return evaluation_df
 
-    def predict(self, data: list[float | int]) -> tuple[str, float]:
+    def predict(self, data: list[float | int], graduate: bool = False) -> tuple[str, float]:
         """
         Calculates the prediction for the given data and returns the relevant label and probability score.
 
+        If graduate is set to True the function returns the graduate values otherwise it returns the prediction with the
+        highest value.
+
         :param data: list[float | int]
+        :param graduate: bool
         :return: tuple[str, float]
 
         """
-        if not self.trained:
+        try:
+            assert self.trained
+        except AssertionError:
             self.train()
-        assert self.trained
+        if self.training_attempts > 1:
+            raise AssertionError("Model not trained - could not continue")
         rfc_prediction = self.rfc.predict_proba([data])[0]
         svc_prediction = self.svc.predict_proba([data])[0]
         knn_prediction = self.knn.predict_proba([data])[0]
         adb_prediction = self.adb.predict_proba([data])[0]
         prediction = list_averages(rfc_prediction, svc_prediction, knn_prediction, adb_prediction)
+        if graduate:
+            return self.classes[self.graduate_index], prediction[self.graduate_index]
         return self.classes[list(prediction).index(max(prediction))], max(prediction)
 
     def feature_difference(self, data: list, feature: str, new_value: str | int | float | bool) -> float:
@@ -257,9 +288,9 @@ class Classifier:
         :param new_value: str | int | float | bool
         :return: float
         """
-        _, prediction_score = self.predict(data)
+        _, prediction_score = self.predict(data, True)
         data_updated = features_update(data, feature, new_value)
-        _, edited_score = self.predict(data_updated)
+        _, edited_score = self.predict(data_updated, True)
         return edited_score - prediction_score
 
     def feature_analysis(self, data: list) -> dict:
@@ -293,24 +324,24 @@ class Classifier:
                 meta_key = f"parental_{key.split('_')[1]}_categories" if "mother" in key or "father" in key else key
                 for v in schema[meta_key].values():
                     diff_temp = self.feature_difference(data, key, v)
-                    if (graduate and diff_temp > diff_final) or (not graduate and diff_temp < diff_final):
+                    if diff_temp > diff_final:
                         diff_final = diff_temp
                 difference = diff_final
             elif schema["variable_types"][key] == "numeric":
                 diff_final = 0
                 for v in student_iqr_percentiles(key):
                     diff_temp = self.feature_difference(data, key, v)
-                    if (graduate and diff_temp > diff_final) or (not graduate and diff_temp < diff_final):
+                    if diff_temp > diff_final:
                         diff_final = diff_temp
                 difference = diff_final
             else:
                 continue
 
-            if (graduate and difference > feature_strength) or (not graduate and difference < feature_strength):
+            if difference > feature_strength:
                 feature_strength = difference
                 feature_main = key
 
-            if (graduate and difference < 0) or (not graduate and difference > 0):
+            if difference <= 0:
                 continue
 
             category = schema["variable_categories"][key]

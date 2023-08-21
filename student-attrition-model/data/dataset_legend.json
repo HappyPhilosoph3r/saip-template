@@ -111,12 +111,12 @@
         "target": "label"
     },
     "marital_status": {
-        "1": "single",
-        "2": "married",
-        "3": "widower",
-        "4": "divorced",
-        "5": "facto union",
-        "6": "legally separated"
+        "1": "Single",
+        "2": "Married",
+        "3": "Widower",
+        "4": "Divorced",
+        "5": "Facto union",
+        "6": "Legally separated"
     },
     "nationality": {
         "1": "Portuguese",
@@ -240,7 +240,7 @@
         "34": "Higher Education—doctorate (3rd cycle)"
     },
     "parental_qualification_categories_readable": {
-        "higher-level": ["Higher Education—bachelor’s degree",
+        "Higher-level": ["Higher Education—bachelor’s degree",
         "Higher Education—degree",
         "Higher Education—master’s degree",
         "Higher Education—doctorate",
@@ -251,7 +251,7 @@
         "Higher Education—master’s degree (2nd cycle)",
         "Higher Education—doctorate (3rd cycle)"
         ],
-        "technical": [
+        "Technical": [
             "General commerce course",
             "Complementary High School Course",
             "Technical-professional course",
@@ -259,7 +259,7 @@
             "Supplementary Accounting and Administration",
             "Technological specialization course"
         ],
-        "lower-level": [
+        "Lower-level": [
             "2nd year complementary high school course",
             "2nd cycle of the general high school course",
             "Secondary Education—12th Year of Schooling or Equivalent",
@@ -269,7 +269,7 @@
             "10th Year of Schooling",
             "Basic Education 3rd Cycle (9th/10th/11th Year) or Equivalent"
         ],
-        "basic-level": [
+        "Basic-level": [
             "Cannot read or write",
             "Can read without having a 4th year of schooling",
             "Basic education 1st cycle (4th/5th year) or equivalent",
@@ -280,16 +280,16 @@
             "9th Year of Schooling—not completed",
             "8th year of schooling"
         ],
-        "unknown": [
+        "Unknown": [
             "Unknown"
         ]
     },
     "parental_qualification_categories": {
-        "1": "unknown",
-        "2": "basic-level",
-        "3": "lower-level",
-        "4": "technical",
-        "5": "higher-level"
+        "1": "Unknown",
+        "2": "Basic-level",
+        "3": "Lower-level",
+        "4": "Technical",
+        "5": "Higher-level"
     },
     "parental_qualification_labels": {
         "1": 0,
@@ -312,7 +312,7 @@
         "10": "Unskilled Workers",
         "11": "Armed Forces Professions",
         "12": "Other Situation",
-        "13": "blank",
+        "13": "Blank",
         "14": "Armed Forces Officers",
         "15": "Armed Forces Sergeants",
         "16": "Other Armed Forces personnel",
@@ -348,37 +348,37 @@
         "46": "Street vendors (except food) and street service providers"
     },
     "parental_occupation_categories_readable": {
-        "academic": [
+        "Academic": [
             "Student",
             "Specialists in Intellectual and Scientific Activities",
             "Specialists in the physical sciences, mathematics, engineering, and related techniques",
             "Specialists in finance, accounting, administrative organization, and public and commercial relations",
             "Teachers"
         ],
-        "leadership": [
+        "Leadership": [
             "Representatives of the Legislative Power and Executive Bodies, Directors, Directors and Executive Managers",
             "Directors of administrative and commercial services",
             "Hotel, catering, trade, and other services directors"
         ],
-        "administration": [
+        "Administration": [
             "Administrative staff",
             "Office workers, secretaries in general, and data processing operators",
             "Data, accounting, statistical, financial services, and registry-related operators",
             "Other administrative support staff"
         ],
-        "military": [
+        "Military": [
             "Armed Forces Professions",
             "Armed Forces Officers",
             "Armed Forces Sergeants",
             "Other Armed Forces personnel",
             "Protection and security services personnel"
         ],
-        "healthcare": [
+        "Healthcare": [
             "Health professionals",
             "Personal service workers",
             "Personal care workers and the like"
         ],
-        "technical": [
+        "Technical": [
             "Skilled construction workers and the like, except electricians",
             "Skilled workers in metallurgy, metalworking, and similar",
             "Skilled workers in electricity and electronics",
@@ -392,11 +392,11 @@
             "Farmers, livestock keepers, fishermen, hunters and gatherers, and subsistence",
             "Market-oriented farmers and skilled agricultural and animal production workers"
         ],
-        "unknown": [
+        "Unknown": [
             "Other Situation",
-            "blank"
+            "Blank"
         ],
-        "unskilled": [
+        "Unskilled": [
             "Unskilled Workers",
             "Workers in food processing, woodworking, and clothing and other industries and crafts",
             "Fixed plant and machine operators",
@@ -412,44 +412,44 @@
         ]
     },
     "parental_occupation_categories": {
-        "1": "unskilled",
-        "2": "unknown",
-        "3": "technical",
-        "4": "healthcare",
-        "5": "military",
-        "6": "administration",
-        "7": "leadership",
-        "8": "academic"
+        "1": "Unskilled",
+        "2": "Unknown",
+        "3": "Technical",
+        "4": "Healthcare",
+        "5": "Military",
+        "6": "Administration",
+        "7": "Leadership",
+        "8": "Academic"
     },
     "gender": {
-        "0": "female",
-        "1": "male"
+        "0": "Female",
+        "1": "Male"
     },
     "attendance_type": {
-        "0": "evening",
-        "1": "daytime"
+        "0": "Evening",
+        "1": "Daytime"
     },
     "binary_variables": {
-        "0": "no",
-        "1": "yes"
+        "0": "No",
+        "1": "Yes"
     },
     "binary_list": [
-        "displaced",
-        "educational_special_needs",
-        "debtor",
-        "tuition_fees_up_to_date",
-        "scholarship_holder",
-        "international"
+        "Displaced",
+        "Educational_special_needs",
+        "Debtor",
+        "Tuition_fees_up_to_date",
+        "Scholarship_holder",
+        "International"
     ],
     "drop_list": {
-        "marital_status": "single",
+        "marital_status": "Single",
         "application_mode": "1st phase—general contingent",
         "course": "Nursing",
-        "attendance_type": "daytime",
+        "attendance_type": "Daytime",
         "previous_qualification": "Secondary education",
-        "mothers_occupation": "unskilled",
-        "fathers_occupation": "unskilled",
+        "mothers_occupation": "Unskilled",
+        "fathers_occupation": "Unskilled",
         "nationality": "Portuguese",
-        "gender": "female"
+        "gender": "Female"
     }
 }

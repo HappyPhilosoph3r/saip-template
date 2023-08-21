@@ -1,4 +1,4 @@
-from db.models_student import Student
+from db.models_student import Student, student_info_projection
 from db.services_pymongo import students
 from db.tools import one_hot_encoding, get_dict_key_from_array, get_dict_key_by_value
 import logging
@@ -6,6 +6,7 @@ import pandas as pd
 from pandas import DataFrame
 import json
 import random
+from pymongo import DESCENDING
 
 logging.getLogger(__name__)
 
@@ -263,6 +264,11 @@ def training_dataset_resampled(validation_split: bool = False, validation_percen
 
 def training_dataset(validation_split: bool = False, validation_percentage: float = 20.0) -> tuple[list, list] | tuple[tuple[list, list], tuple[list, list]]:
     """
+    Creates a training dataset from the database and returns the relevant data split by features and label.
+
+    If validation is set to True it divides the training set into two with the division split equal to the validation
+    percentage value and returns two sets of data split by features and labels.
+
     :param validation_split: bool
     :param validation_percentage: float
     :return:  tuple[list, list] | tuple[tuple[list, list], tuple[list, list]]
@@ -281,6 +287,16 @@ def training_dataset(validation_split: bool = False, validation_percentage: floa
     validation_ids = list(map(lambda x: x._id, validation_data))
     training_data = get_students(filters={"training_data": True, "_id": {"$nin": validation_ids}})
     return split_features_and_labels(training_data), split_features_and_labels(validation_data)
+
+
+def test_dataset() -> tuple[list, list]:
+    """
+    Creates a test dataset from the database and returns the relevant data split by features and label.
+
+    :return:  tuple[list, list]
+    """
+    test_students = get_students(filters={"test_data": True})
+    return split_features_and_labels(test_students)
 
 
 def create_training_test_datasets(training_percentage: float = 80.0) -> bool:
@@ -326,6 +342,20 @@ def create_training_test_datasets(training_percentage: float = 80.0) -> bool:
     return True
 
 
+def student_min_max(category: str, training: bool = True) -> tuple[int | float, int | float]:
+    """
+    Returns the minimum and maximum value for a given category on the training or full dataset.
+
+    :param category: str
+    :param training: bool
+    :return: tuple[int | float, int | float]
+    """
+    filters = {"training_data": True} if training else {}
+    min_c = list(students.find(filters, student_info_projection).sort(category).limit(1))[0][category]
+    max_c = list(students.find(filters, student_info_projection).sort(category, DESCENDING).limit(1))[0][category]
+    return min_c, max_c
+
+
 def student_iqr_percentiles(category: str) -> list[float | int]:
     """
     Calculates the iter-quartile range for a specified category and returns a list of values within the range.
@@ -333,8 +363,7 @@ def student_iqr_percentiles(category: str) -> list[float | int]:
     :param category: str
     :return: list[float | int]
     """
-    samples = get_students(info_only=True, filters={"training_data": True})
-    samples_sorted = list(sorted(list(map(lambda x: x[category], samples))))
-    samples_range = samples_sorted[-1] - samples_sorted[0]
+    min_c, max_c = student_min_max(category)
+    samples_range = max_c - min_c
     samples_iqr = (((samples_range / 100) * 60) - ((samples_range / 100) * 40)) / 10
-    return [(samples_sorted[0] + ((samples_range / 100) * 40)) + (i * samples_iqr) for i in range(11)]
+    return [(min_c + ((samples_range / 100) * 40)) + (i * samples_iqr) for i in range(11)]

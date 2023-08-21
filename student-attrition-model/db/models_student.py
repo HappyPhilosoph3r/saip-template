@@ -267,3 +267,43 @@ class Student:
             self.training_data = False
             self.test_data = True
         self.update_document()
+
+
+student_info_projection = {
+            "_id": 1,
+            "marital_status": 1,
+            "application_mode": 1,
+            "application_order": 1,
+            "course": 1,
+            "attendance_type": 1,
+            "previous_qualification": 1,
+            "nationality": 1,
+            "mothers_qualification": 1,
+            "fathers_qualification": 1,
+            "mothers_occupation": 1,
+            "fathers_occupation": 1,
+            "displaced": 1,
+            "educational_special_needs": 1,
+            "debtor": 1,
+            "tuition_fees_up_to_date": 1,
+            "gender": 1,
+            "scholarship_holder": 1,
+            "age_at_enrolment": 1,
+            "international": 1,
+            "curricular_units_1st_semester_credited": 1,
+            "curricular_units_1st_semester_enrolled": 1,
+            "curricular_units_1st_semester_evaluations": 1,
+            "curricular_units_1st_semester_approved": 1,
+            "curricular_units_1st_semester_grade": 1,
+            "curricular_units_1st_semester_without_evaluations": 1,
+            "curricular_units_2nd_semester_credited": 1,
+            "curricular_units_2nd_semester_enrolled": 1,
+            "curricular_units_2nd_semester_evaluations": 1,
+            "curricular_units_2nd_semester_approved": 1,
+            "curricular_units_2nd_semester_grade": 1,
+            "curricular_units_2nd_semester_without_evaluations": 1,
+            "unemployment_rate": 1,
+            "inflation_rate": 1,
+            "gdp": 1,
+            "target": 1
+        }

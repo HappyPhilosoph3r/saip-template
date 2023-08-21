@@ -70,7 +70,7 @@ def initialise_database():
     schema = get_dataset_schema()
     dataset = data.to_dict('records')
 
-    create_translator(data, schema)
+    create_translator(data, True)
 
     for index, student in enumerate(dataset):
         generate_new_student(student, schema, True)
