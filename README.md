@@ -32,15 +32,39 @@ NodeJS
 MongoDB
 
 ## Initialisation steps 
-This assumes that you have already cloned the repository and added the dataset to it. 
+This assumes that you have already installed the prerequisit software, cloned the repository and added the dataset to it. 
 
 ### Docker process
 
 1. Navigate to the root of the project in a terminal. 
 2. Enter the command: docker compose up -d
-3. In a browser go to http://localhost:5173/
+3. In a browser go to http://localhost
 
 ### Alternative local process
+The project is setup to use docker. In order to use the local method the following files need to be edited: 
 
-...  
+./student-intervention-model/db/services_pymongo.py -line 4: the docker variable needs to be changed to False
+./student-intervention-server/utils/habitat.ts -line 3: the docker variable needs to be changed to true
+./student-intervention-client/vite.config.ts -line 17-18: line 17 needs to commented out and line 18 needs to be uncommented. 
 
+#### Initialise the model
+1. Navigate to inside the student-atttrition-model directory found in the root of the project using a terminal.
+2. Create a venv file by running the following (or os-varient of): python3 -m venv
+3. Activate the venv by running the following (or os-varient of): source venv/bin/activate
+4. Install the python requirements by running the following (or os-varient of): pip install -r requirements.txt
+5. Before executing the command in step 6, please understand what the bind flag does. 
+6. Start the model server by running one of the the following command: hypercorn --bind=0.0.0.0 main:create_app()
+
+#### Initialise the server
+1. Navigate to inside the student-atttrition-server directory found in the root of the project using a terminal.
+2. Install the NodeJS requirements by running the following command: npm install
+3. Start the server by running the following command: npm run start 
+
+#### Initialise the user interface
+
+1. Navigate to inside the student-atttrition-client directory found in the root of the project using a terminal.
+2. Install the UI requirements by running the following command: npm install
+3. Start the server by running the following command: npm run dev
+
+#### To access the site
+3. In a browser go to http://localhost:5173/
